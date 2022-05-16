@@ -3,6 +3,8 @@ Tools to easily create maps and play a popular game
 
 The purpose is to make custom map generation based on real world geography easy and fun!  The MVP is to be able to generate a board and optionally destination tickets.  From there we want to either design a RESTful API based game engine or find a way to import our custom maps to another game.
 
+The name is a play on words of direct translations of the original. Fahrkarte fuer Fahrkarte was a close second.
+
 ## Design
 
 ![Design diagram](/design/tbt-design.png)
