@@ -62,10 +62,12 @@ TBT will consist of the following components/flows:
    - one can continually run 6 to check work visually
 5. Design destination tickets
 6. Generate map
+   - `tbt-edit export -i map.svg`
    - Input JSON file generated in 3 and modified in 4
-   - select a map source (example http://maps.stamen.com/ )
-   - download background raster
-   - generate SVG from JSON, which references the raster as a layer
+   - select a map source if desired (example http://maps.stamen.com/ )
+   - It will auto download background raster
+   - It will generate SVG from JSON, which references the raster as a layer
+   - Output will be an SVG and a png
 
 ## JSON spec
 
