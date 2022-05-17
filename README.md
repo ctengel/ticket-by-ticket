@@ -55,3 +55,34 @@ TBT will consist of the following components/flows:
    - `WKT` is format `POINT (lat lng)`
    - `name` is simply the name of the city
 3. Convert CSV to JSON
+   - It figures out geometry automatically
+4. Design routes/tracks
+5. Design destination tickets
+6. Generate map
+   - Input JSON file generated in 3 and modified in 4
+   - select a map source (example http://maps.stamen.com/ )
+   - download background raster
+   - generate SVG from JSON, which references the raster as a layer
+
+## JSON spec
+
+Map:
+
+- geometry
+  - real: lat1 (NW), long1 (NW), lat3 (SE) lat4 (SE)
+  - resoltion: x, y
+  - image: relative filename
+- cities
+  - name: x, y
+- route: (list)
+  - cities: 1, 2
+  - len: int
+  - tracks:
+    - color
+    - color
+    - auto
+- tickets (list)
+  - cities: 1, 2
+  - points: int
+
+Rules
