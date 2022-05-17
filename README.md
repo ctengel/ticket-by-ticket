@@ -43,3 +43,15 @@ TBT will consist of the following components/flows:
 7. robot
    - interacts with db 5
    - may get map data 3
+
+## Get started
+
+1. Draw a map in Google maps
+   - Just put points with simple names for cities/stations
+   - example https://www.google.com/maps/d/edit?mid=1hx0aYHMCiwSoYo_vl30oC0rnj-tKL-K5&usp=sharing
+2. Export the layer as CSV
+   - Example output `sample.csv`
+   - Needs to have columns `WKT`, `name`
+   - `WKT` is format `POINT (lat lng)`
+   - `name` is simply the name of the city
+3. Convert CSV to JSON
