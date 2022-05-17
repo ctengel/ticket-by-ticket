@@ -55,8 +55,11 @@ TBT will consist of the following components/flows:
    - `WKT` is format `POINT (lat lng)`
    - `name` is simply the name of the city
 3. Convert CSV to JSON
+   - `tbd-edit import`
    - It figures out geometry automatically
 4. Design routes/tracks
+   - `tbt-edit con`
+   - one can continually run 6 to check work visually
 5. Design destination tickets
 6. Generate map
    - Input JSON file generated in 3 and modified in 4
