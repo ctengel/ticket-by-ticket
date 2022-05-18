@@ -75,7 +75,7 @@ Map:
 
 - geometry
   - real: lat1 (NW), long1 (NW), lat3 (SE) lat4 (SE)
-  - resoltion: x, y
+  - resolution: x, y
   - image: relative filename
 - cities
   - name: x, y
@@ -89,5 +89,7 @@ Map:
 - tickets (list)
   - cities: 1, 2
   - points: int
+
+(see `map.schema.json`)
 
 Rules

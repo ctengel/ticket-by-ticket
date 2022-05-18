@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/ctengel/ticket-by-ticket/main/design/map.schema.json",
+  "title": "TBT Map",
+  "description": "A map for use in Ticket by Ticket",
+  "type": "object",
+  "properties": {
+    "geometry": {
+      "description": "Info on map geography and resolution",
+      "type": "object",
+      "properties": {
+        "real": {
+          "type": "array",
+          "description": "northernmost, westernmost, southernmost, easternmost lat/lng values",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "resolution": {
+          "type": "array",
+          "description": "Resolution of image file",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "image": {
+          "type": "string",
+          "description": "Relative filename of image",
+          "format": "uri-reference"
+        }
+      }
+    },
+    "cities": {
+      "description": "The cities or stations on the map",
+      "type": "object",
+      "patternProperties": {
+        ".": {
+          "type": "array",
+          "description": "coordinates of city",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "routes": {
+      "description": "A list of all the city pairs for routes",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "info about the route",
+        "properties": {
+          "cities": {
+            "description": "cities connected by the route",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "length": {
+            "type": "number",
+            "description": "How many trains to complete"
+          },
+          "tracks": {
+            "type": "array",
+            "description": "list of tracks with color",
+            "items": {
+              "type": "string",
+              "enum": ["random", "blank", "blue", "red", "orange", "green", "yellow", "purple", "white", "black"]
+            }
+          }
+        },
+        "required": [ "cities" ]
+      }
+    },
+    "tickets": {
+      "description": "Destination tickets",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "description": "info about the ticket",
+        "properties": {
+          "cities": {
+          "description": "cities connected by the ticket",
+            "items": {
+              "type": "string"
+            },
+          "minItems": 2,
+          "maxItems": 2
+          },
+          "points": {
+            "type": "number",
+            "description": "Points earned by completing"
+          }
+        }
+      }
+    }
+  },
+  "required": [ "cities" ]
+}
