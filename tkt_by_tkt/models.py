@@ -30,7 +30,7 @@ class Map:
 
     def export_cities(self):
         """Cities with locations"""
-        return {x[0]: list(x[1].where()) for x in self._cities}
+        return {x[0]: list(x[1].where()) for x in self._cities.items()}
 
     def export_routes(self):
         """Routes with some info"""
