@@ -1,0 +1,25 @@
+[project]
+name = "ticket-by-ticket"
+version = "0.1.0"
+description = "Ticket by Ticket tools to easily create maps and play a popular game"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE"}
+authors = [{name = "ctengel"}]
+keywords = ["ticket", "ride"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha", 
+  "Environment :: Console",
+  "Intended Audience :: End Users/Desktop",
+  "Natural Language :: English",
+  "Topic :: Games/Entertainment :: Board Games"
+]
+
+[project.urls]
+repository = "https://github.com/ctengel/ticket-by-ticket"
+
+[project.scripts]
+tbt-edit = "tkt_by_tkt.editor:cli"
+
+[tool.setuptools.packages.find]
+include = ["tkt_by_tkt"]
