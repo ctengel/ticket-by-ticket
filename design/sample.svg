@@ -11,4 +11,10 @@
   <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1208/1538.jpg" height="256" width="256" x="768" y="0" />
   <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1208/1539.jpg" height="256" width="256" x="768" y="256" />
   <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1208/1540.jpg" height="256" width="256" x="768" y="512" />
+  <circle cx="311" cy="366" r="5" />
+  <text x="321" y="371">Midtown</text>
+  <circle cx="445" cy="160" r="5" />
+  <text x="455" y="165">Harlem</text>
+  <circle cx="825" cy="567" r="5" />
+  <text x="835" y="572">Jamaica</text>
 </svg>
