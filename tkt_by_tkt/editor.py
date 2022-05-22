@@ -2,7 +2,7 @@
 
 import argparse
 import os
-from . import models, tbtjson, gmcsv
+from . import models, tbtjson, gmcsv, mapsvg
 
 def gmcsv2tbtjson(gmcsv_file, my_map):
     """Read a GM CSV file"""
@@ -63,6 +63,10 @@ def _show(args, my_map):
                                                           ','.join(exp.get('tracks', ['?']))))
     return False
 
+def _export(args, my_map):
+    # TODO figureout
+    mapsvg.draw_map(my_map, args.mapsvg, args.tile_url)
+
 def cli():
     """Command Line editor interface"""
     parser = argparse.ArgumentParser()
@@ -83,6 +87,11 @@ def cli():
 
     parser_show = subparsers.add_parser('show')
     parser_show.set_defaults(func=_show)
+
+    parser_import = subparsers.add_parser('export')
+    parser_import.add_argument('mapsvg')
+    parser_import.add_argument('-t', '--tile-url')
+    parser_import.set_defaults(func=_export)
 
     args = parser.parse_args()
 

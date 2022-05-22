@@ -60,6 +60,17 @@ class Map:
         found.destruct()
         del self._routes[found_index]
 
+    def get_geo_real(self, border=8):
+        """Get extremes of the map in lat and long"""
+        latlngs = self.export_cities().values()
+        lats = [x[0] for x in latlngs]
+        longs = [x[1] for x in latlngs]
+        return [max(lats) + (max(lats) - min(lats)) / border,
+                min(longs) - (max(longs) - min(longs)) / border,
+                min(lats) - (max(lats) - min(lats)) / border,
+                max(longs) + (max(longs) - min(longs)) / border]
+
+
 
 class City:
     """A city"""

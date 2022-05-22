@@ -1,25 +1,25 @@
 {
   "cities": {
     "Midtown": [
-      -73.984889,
-      40.7518832
+      40.7518832,
+      -73.984889
     ],
     "Harlem": [
-      -73.9387886,
-      40.8053547
+      40.8053547,
+      -73.9387886
     ],
     "Jamaica": [
-      -73.8084128,
-      40.6994569
+      40.6994569,
+      -73.8084128
     ]
   },
   "routes": [
     {
       "cities": [
         "Midtown",
-        "Jamaica"
+        "Harlem"
       ],
-      "length": 4,
+      "length": 2,
       "tracks": [
         "random",
         "blank"
@@ -28,9 +28,9 @@
     {
       "cities": [
         "Midtown",
-        "Harlem"
+        "Jamaica"
       ],
-      "length": 2,
+      "length": 4,
       "tracks": [
         "random",
         "blank"

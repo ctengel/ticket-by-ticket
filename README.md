@@ -93,3 +93,7 @@ Map:
 (see `map.schema.json`)
 
 Rules
+
+## Acknowlegements
+
+* Map tiles by [Stamen Design](http://stamen.com), [CC BY 3.0](http://creativecommons.org/licenses/by/3.0). Data by [OpenStreetMap](http://openstreetmap.org), under [CC BY SA](http://creativecommons.org/licenses/by-sa/3.0).

@@ -1,0 +1,14 @@
+<svg width="1024" height="768" xmlns="http://www.w3.org/2000/svg">
+  <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1205/1538.jpg" height="256" width="256" x="0" y="0" />
+  <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1205/1539.jpg" height="256" width="256" x="0" y="256" />
+  <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1205/1540.jpg" height="256" width="256" x="0" y="512" />
+  <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1206/1538.jpg" height="256" width="256" x="256" y="0" />
+  <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1206/1539.jpg" height="256" width="256" x="256" y="256" />
+  <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1206/1540.jpg" height="256" width="256" x="256" y="512" />
+  <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1207/1538.jpg" height="256" width="256" x="512" y="0" />
+  <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1207/1539.jpg" height="256" width="256" x="512" y="256" />
+  <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1207/1540.jpg" height="256" width="256" x="512" y="512" />
+  <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1208/1538.jpg" height="256" width="256" x="768" y="0" />
+  <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1208/1539.jpg" height="256" width="256" x="768" y="256" />
+  <image href="https://stamen-tiles.a.ssl.fastly.net/watercolor/12/1208/1540.jpg" height="256" width="256" x="768" y="512" />
+</svg>
