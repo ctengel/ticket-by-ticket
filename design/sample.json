@@ -18,12 +18,22 @@
       "cities": [
         "Midtown",
         "Jamaica"
+      ],
+      "length": 4,
+      "tracks": [
+        "random",
+        "blank"
       ]
     },
     {
       "cities": [
         "Midtown",
         "Harlem"
+      ],
+      "length": 2,
+      "tracks": [
+        "random",
+        "blank"
       ]
     }
   ]

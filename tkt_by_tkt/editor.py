@@ -17,14 +17,34 @@ def _import(args, my_map):
     gmcsv2tbtjson(args.gmcsv, my_map)
     return True
 
+def _route_action(route, length, tracks):
+    if length:
+        route.set_length(length)
+    if tracks:
+        route.set_tracks(tracks)
+
 def _con_add(args, my_map):
-    my_map.add_route(args.cities)
+    assert not (args.interactive and (args.length or args.track))
+    my_route = my_map.add_route(args.cities)
+    length = args.length
+    tracks = args.track
+    if args.interactive:
+        # TODO implement
+        assert False
+    _route_action(my_route, length, tracks)
     return True
 
 def _con_mod(args, my_map):
+    assert not args.interactive
+    # TODO implement interactive
+    assert args.length or args.track
+    my_route = my_map.get_city(args.cities[0]).get_routes()[args.cities[1]]
+    _route_action(my_route, args.length, args.track)
     return True
 
 def _con_del(args, my_map):
+    assert not (args.interactive or args.length or args.track)
+    my_map.remove_route(args.cities)
     return True
 
 def _con(args, my_map):
@@ -32,6 +52,16 @@ def _con(args, my_map):
             'mod': _con_mod,
             'del': _con_del}
     return ptrs[args.action](args, my_map)
+
+def _show(args, my_map):
+    for city in my_map.all_city_names():
+        print("{}:".format(city))
+        for adjacent, info in my_map.get_city(city).get_routes().items():
+            exp = info.export()
+            print('\t- {}, distance {}, tracks {}'.format(adjacent,
+                                                          exp.get('length', '?'),
+                                                          ','.join(exp.get('tracks', ['?']))))
+    return False
 
 def cli():
     """Command Line editor interface"""
@@ -48,8 +78,11 @@ def cli():
     parser_con.add_argument('cities', nargs=2)
     parser_con.add_argument('-i', '--interactive', action='store_true')
     parser_con.add_argument('-l', '--length', type=int)
-    parser_con.add_argument('-t', '--track', nargs='*')
+    parser_con.add_argument('-t', '--track', action='append')
     parser_con.set_defaults(func=_con)
+
+    parser_show = subparsers.add_parser('show')
+    parser_show.set_defaults(func=_show)
 
     args = parser.parse_args()
 
