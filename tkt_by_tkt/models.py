@@ -130,7 +130,12 @@ class Route:
 
     def export(self):
         """Return dictionary with info about this route"""
-        return {'cities': self.get_city_names(), 'length': self._length, 'tracks': self._tracks}
+        exp_dict = {'cities': self.get_city_names()}
+        if self._length:
+            exp_dict['length'] = self._length
+        if self._tracks:
+            exp_dict['tracks'] = self._tracks
+        return exp_dict
 
     def set_length(self, length):
         """Set the length"""

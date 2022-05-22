@@ -12,5 +12,19 @@
       -73.8084128,
       40.6994569
     ]
-  }
+  },
+  "routes": [
+    {
+      "cities": [
+        "Midtown",
+        "Jamaica"
+      ]
+    },
+    {
+      "cities": [
+        "Midtown",
+        "Harlem"
+      ]
+    }
+  ]
 }
