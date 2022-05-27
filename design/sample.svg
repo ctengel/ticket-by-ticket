@@ -17,4 +17,6 @@
   <text x="455" y="165">Harlem</text>
   <circle cx="825" cy="567" r="5" />
   <text x="835" y="572">Jamaica</text>
+  <line x1="311" y1="366" x2="445" y2="160" stroke="black" />
+  <line x1="311" y1="366" x2="825" y2="567" stroke="black" />
 </svg>

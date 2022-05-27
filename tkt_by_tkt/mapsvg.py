@@ -3,6 +3,9 @@
 import xml.etree.ElementTree as ET
 import math
 
+RECT_X = 25
+RECT_Y = 10
+
 def deg2num(lat_deg, lon_deg, zoom):
     """Find a tile"""
     # see https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Lon./lat._to_tile_numbers_2
@@ -29,15 +32,29 @@ def draw_map(my_map, file_name, tile_url, zoom=12):
                                          'width': "256",
                                          'x': str((tile_x - upper_left[0]) * 256),
                                          'y': str((tile_y - upper_left[1]) * 256)})
+    # TODO instead of adding this seperate city_dir datastructure, include pixels in Cities class?
+    city_dir = {}
     for city, latlng in my_map.export_cities().items():
         tile, offset = deg2num(latlng[0], latlng[1], zoom)
-        city_pxl = ((tile[0] - upper_left[0]) * 256 + offset[0], (tile[1] - upper_left[1]) * 256 + offset[1])
+        city_pxl = ((tile[0] - upper_left[0]) * 256 + offset[0],
+                    (tile[1] - upper_left[1]) * 256 + offset[1])
         ET.SubElement(top, 'circle', {'cx': str(city_pxl[0]),
                                       'cy': str(city_pxl[1]),
                                       'r': "5"})
         city_txt = ET.SubElement(top, 'text', {'x': str(city_pxl[0] + 10),
                                                'y': str(city_pxl[1] + 5)})
         city_txt.text = city
+        city_dir[city] = city_pxl
+    for route in my_map.export_routes():
+        city_locs = [city_dir[x] for x in route['cities']]
+        # length = route.get('length', 1)
+        # tracks = len(route.get('tracks', [None]))
+        ET.SubElement(top, 'line', {'x1': str(city_locs[0][0]),
+                                    'y1': str(city_locs[0][1]),
+                                    'x2': str(city_locs[1][0]),
+                                    'y2': str(city_locs[1][1]),
+                                    'stroke': 'black'})
+        # TODO actually draw rectangles
     tree = ET.ElementTree(element=top)
     ET.indent(tree)
     tree.write(file_name)
