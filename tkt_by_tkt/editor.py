@@ -4,17 +4,35 @@ import argparse
 import os
 from . import models, tbtjson, gmcsv, mapsvg
 
-def gmcsv2tbtjson(gmcsv_file, my_map):
+def gmcsv2tbtjson(gmcsv_file, my_map, sync=False, rm_cities=False):
     """Read a GM CSV file"""
     with open(gmcsv_file, newline='') as csv_fh:
         csv_data = gmcsv.read_map(csv_fh)
+    existing = my_map.all_city_names()
+    found = []
+    assert sync == bool(existing)
     for city, latlng in csv_data.items():
-        city_obj = my_map.add_city(city)
+        city_obj = None
+        if sync and city in existing:
+            city_obj = my_map.get_city(city)
+        if not city_obj:
+            city_obj = my_map.add_city(city)
         city_obj.place(latlng)
+        found.append(city)
+    for city in existing:
+        if city not in found:
+            assert rm_cities
+            my_map.del_city(city)
 
 def _import(args, my_map):
-    assert not my_map.all_city_names()
-    gmcsv2tbtjson(args.gmcsv, my_map)
+    rm_cities = False
+    if args.sync:
+        rm_cities = args.force
+    else:
+        # TODO allow force w/o sync to just make a new object and overwrite
+        assert not args.force
+        assert not my_map.all_city_names()
+    gmcsv2tbtjson(args.gmcsv, my_map, args.sync, rm_cities)
     return True
 
 def _route_action(route, length, tracks):
@@ -66,6 +84,12 @@ def _show(args, my_map):
 def _export(args, my_map):
     # TODO figureout
     mapsvg.draw_map(my_map, args.mapsvg, args.tile_url)
+    return False
+
+def _pnt(args, my_map):
+    # TODO args.force for delete routes to the city also
+    my_map.del_city(args.city)
+    return True
 
 def cli():
     """Command Line editor interface"""
@@ -75,6 +99,8 @@ def cli():
 
     parser_import = subparsers.add_parser('import')
     parser_import.add_argument('gmcsv')
+    parser_import.add_argument('-s', '--sync', action='store_true')
+    parser_import.add_argument('-f', '--force', action='store_true')
     parser_import.set_defaults(func=_import)
 
     parser_con = subparsers.add_parser('con')
@@ -84,6 +110,12 @@ def cli():
     parser_con.add_argument('-l', '--length', type=int)
     parser_con.add_argument('-t', '--track', action='append')
     parser_con.set_defaults(func=_con)
+
+    parser_pnt = subparsers.add_parser('point')
+    parser_pnt.add_argument('action', choices=['del'])
+    # TODO -f for delete connections also
+    parser_pnt.add_argument('city')
+    parser_pnt.set_defaults(func=_pnt)
 
     parser_show = subparsers.add_parser('show')
     parser_show.set_defaults(func=_show)
