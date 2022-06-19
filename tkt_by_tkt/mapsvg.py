@@ -3,8 +3,8 @@
 import xml.etree.ElementTree as ET
 import math
 
-RECT_X = 25
-RECT_Y = 10
+RECT_X = 25.0
+RECT_Y = 10.0
 
 def deg2num(lat_deg, lon_deg, zoom):
     """Find a tile"""
@@ -16,6 +16,43 @@ def deg2num(lat_deg, lon_deg, zoom):
     x_offset = int(256.0 * (((lon_deg + 180.0) / 360.0 * n) - xtile))
     y_offset = int(256.0 * (((1.0 - math.asinh(math.tan(lat_rad)) / math.pi) / 2.0 * n) - ytile))
     return ((xtile, ytile), (x_offset, y_offset))
+
+
+
+def rectsline(length, width):
+    """Draw a bunch of rectangles along x axis line"""
+    startxs = [x*RECT_X*9.0/8.0 for x in range(length)]
+    startys = [y*RECT_Y*9.0/8.0 for y in range(width)]
+    allrects = []
+    extent = (startxs[-1] + RECT_X, startys[-1] + RECT_Y)
+    tx = extent[0] / 2.0
+    ty = extent[1] / 2.0
+    for x in startxs:
+        for y in startys:
+            allrects.append([(x-tx,y-ty),
+                             (x+RECT_X-tx,y-ty),
+                             (x+RECT_X-tx,y+RECT_Y-ty),
+                             (x-tx,y+RECT_Y-ty)])
+    return allrects
+
+def relpt(midi, angle, pnt):
+    """Move a point relative to a certian center"""
+    # TODO angles
+    return (midi[0] + pnt[0], midi[1] + pnt[1])
+
+def rectsform(line, rects):
+    """Take a bunch of rectangles and draw them along a line"""
+    midpoint = ((line[0][0] + line[1][0]) / 2.0, (line[0][1] + line[1][1]) / 2.0)
+    # TODO calc angle
+    outrect = []
+    for rect in rects:
+        myrect = []
+        for pnt in rect:
+            # TODO angle
+            myrect.append(relpt(midpoint, None, pnt))
+        outrect.append(myrect)
+    return outrect
+
 
 def draw_map(my_map, file_name, tile_url, zoom=12):
     """Draw map to SVG"""
@@ -47,14 +84,19 @@ def draw_map(my_map, file_name, tile_url, zoom=12):
         city_dir[city] = city_pxl
     for route in my_map.export_routes():
         city_locs = [city_dir[x] for x in route['cities']]
-        # length = route.get('length', 1)
-        # tracks = len(route.get('tracks', [None]))
+        length = route.get('length', 1)
+        tracks = route.get('tracks', [None])
         ET.SubElement(top, 'line', {'x1': str(city_locs[0][0]),
                                     'y1': str(city_locs[0][1]),
                                     'x2': str(city_locs[1][0]),
                                     'y2': str(city_locs[1][1]),
                                     'stroke': 'black'})
-        # TODO actually draw rectangles
+        rectangles = rectsform([(city_locs[0][0], city_locs[0][1]),
+                                (city_locs[1][0], city_locs[1][1])],
+                               rectsline(length, len(tracks)))
+        # TODO colors
+        for rect in rectangles:
+            ET.SubElement(top, 'polygon', {'points': " ".join([",".join([str(y) for y in x]) for x in rect])})
     tree = ET.ElementTree(element=top)
     ET.indent(tree)
     tree.write(file_name)
