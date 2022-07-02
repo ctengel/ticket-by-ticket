@@ -37,18 +37,17 @@ def rectsline(length, width):
 
 def relpt(midi, angle, pnt):
     """Move a point relative to a certian center"""
-    # TODO angles
+    # TODO eliminate angle
     return (midi[0] + pnt[0], midi[1] + pnt[1])
 
 def rectsform(line, rects):
     """Take a bunch of rectangles and draw them along a line"""
+    # TODO refactor midpoint from here and draw_map
     midpoint = ((line[0][0] + line[1][0]) / 2.0, (line[0][1] + line[1][1]) / 2.0)
-    # TODO calc angle
     outrect = []
     for rect in rects:
         myrect = []
         for pnt in rect:
-            # TODO angle
             myrect.append(relpt(midpoint, None, pnt))
         outrect.append(myrect)
     return outrect
@@ -95,8 +94,19 @@ def draw_map(my_map, file_name, tile_url, zoom=12):
                                 (city_locs[1][0], city_locs[1][1])],
                                rectsline(length, len(tracks)))
         # TODO colors
+        angle = math.atan2(city_locs[1][1] - city_locs[0][1], city_locs[1][0] - city_locs[0][0])
+        midpoint = ((city_locs[0][0] + city_locs[1][0]) / 2.0,
+                    (city_locs[0][1] + city_locs[1][1]) / 2.0)
+        tracks_g = ET.SubElement(top,
+                                 'g',
+                                 {'transform': "rotate({} {} {})".format(math.degrees(angle),
+                                                                         midpoint[0],
+                                                                         midpoint[1])})
         for rect in rectangles:
-            ET.SubElement(top, 'polygon', {'points': " ".join([",".join([str(y) for y in x]) for x in rect])})
+            # TODO rectangles instead of polygons
+            ET.SubElement(tracks_g,
+                          'polygon',
+                          {'points': " ".join([",".join([str(y) for y in x]) for x in rect])})
     tree = ET.ElementTree(element=top)
     ET.indent(tree)
     tree.write(file_name)
