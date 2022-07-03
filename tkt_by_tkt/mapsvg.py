@@ -105,12 +105,17 @@ def draw_map(my_map, file_name, tile_url, zoom=12, lines=False):
                                  {'transform': "rotate({} {} {})".format(math.degrees(angle),
                                                                          midpoint[0],
                                                                          midpoint[1])})
-        for rect in rectangles:
+        for idx, rect in enumerate(rectangles):
+            mycolor = tracks[idx % len(tracks)]
+            assert mycolor != "random"
+            if not mycolor or mycolor == "blank":
+                mycolor = "gray"
             # TODO rectangles instead of polygons
             ET.SubElement(tracks_g,
                           'polygon',
                           {'points': " ".join([",".join([str(y) for y in x]) for x in rect]),
-                           'opacity': '0.5'})
+                           'opacity': '0.75',
+                           'fill': mycolor})
     tree = ET.ElementTree(element=top)
     ET.indent(tree)
     tree.write(file_name)

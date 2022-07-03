@@ -170,6 +170,7 @@ class Route:
 
     def distance(self):
         """Return approximate distance in meters"""
+        # TODO more precise estimate
         coords = [x.where() for x in self._cities]
         latdist = (coords[1][0] - coords[0][0]) * 110947.2
         londist = (coords[1][1] - coords[0][1]) * 87843.36

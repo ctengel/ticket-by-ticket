@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import random
 from . import models, tbtjson, gmcsv, mapsvg
 
 def gmcsv2tbtjson(gmcsv_file, my_map, sync=False, rm_cities=False):
@@ -26,9 +27,21 @@ def gmcsv2tbtjson(gmcsv_file, my_map, sync=False, rm_cities=False):
 
 def autolengths(my_map):
     """Set all lengths based on shortest run"""
+    # TODO allow not clobbering existing lengths
     shortest = min([x.distance() for x in my_map.get_routes()])
     for route in my_map.get_routes():
         route.set_length(int(route.distance() / shortest))
+
+def autocolors(my_map):
+    """Automatically randomly assign colors"""
+    # TODO allow not colobbering existing colors
+    for route in my_map.get_routes():
+        num_tracks = len(route.export().get('tracks', [None]))
+        if random.getrandbits(1):
+            route.set_tracks(["blank"] * num_tracks)
+        else:
+            route.set_tracks([random.choice(["blue", "red", "orange", "green", "yellow", "purple", "white", "black"]) for _ in range(num_tracks)])
+
 
 def _import(args, my_map):
     rm_cities = False
@@ -101,6 +114,10 @@ def _lengths(args, my_map):
     autolengths(my_map)
     return True
 
+def _colors(args, my_map):
+    autocolors(my_map)
+    return True
+
 def cli():
     """Command Line editor interface"""
     parser = argparse.ArgumentParser()
@@ -137,6 +154,9 @@ def cli():
 
     parser_lengths = subparsers.add_parser('lengths')
     parser_lengths.set_defaults(func=_lengths)
+
+    parser_colors = subparsers.add_parser('colors')
+    parser_colors.set_defaults(func=_colors)
 
     args = parser.parse_args()
 
