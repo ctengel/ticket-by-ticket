@@ -3,8 +3,10 @@
 import xml.etree.ElementTree as ET
 import math
 
-RECT_X = 25.0
-RECT_Y = 10.0
+RECT_X = 100.0
+RECT_Y = 40.0
+CIRC_R = "20"
+TXT_OFFSET = 30
 
 def deg2num(lat_deg, lon_deg, zoom):
     """Find a tile"""
@@ -53,7 +55,7 @@ def rectsform(line, rects):
     return outrect
 
 
-def draw_map(my_map, file_name, tile_url, zoom=12):
+def draw_map(my_map, file_name, tile_url, zoom=12, lines=False):
     """Draw map to SVG"""
     extremes = my_map.get_geo_real()
     upper_left, _ = deg2num(extremes[0], extremes[1], zoom)
@@ -76,8 +78,8 @@ def draw_map(my_map, file_name, tile_url, zoom=12):
                     (tile[1] - upper_left[1]) * 256 + offset[1])
         ET.SubElement(top, 'circle', {'cx': str(city_pxl[0]),
                                       'cy': str(city_pxl[1]),
-                                      'r': "5"})
-        city_txt = ET.SubElement(top, 'text', {'x': str(city_pxl[0] + 10),
+                                      'r': CIRC_R})
+        city_txt = ET.SubElement(top, 'text', {'x': str(city_pxl[0] + TXT_OFFSET),
                                                'y': str(city_pxl[1] + 5)})
         city_txt.text = city
         city_dir[city] = city_pxl
@@ -85,11 +87,12 @@ def draw_map(my_map, file_name, tile_url, zoom=12):
         city_locs = [city_dir[x] for x in route['cities']]
         length = route.get('length', 1)
         tracks = route.get('tracks', [None])
-        ET.SubElement(top, 'line', {'x1': str(city_locs[0][0]),
-                                    'y1': str(city_locs[0][1]),
-                                    'x2': str(city_locs[1][0]),
-                                    'y2': str(city_locs[1][1]),
-                                    'stroke': 'black'})
+        if lines:
+            ET.SubElement(top, 'line', {'x1': str(city_locs[0][0]),
+                                        'y1': str(city_locs[0][1]),
+                                        'x2': str(city_locs[1][0]),
+                                        'y2': str(city_locs[1][1]),
+                                        'stroke': 'black'})
         rectangles = rectsform([(city_locs[0][0], city_locs[0][1]),
                                 (city_locs[1][0], city_locs[1][1])],
                                rectsline(length, len(tracks)))
@@ -106,7 +109,8 @@ def draw_map(my_map, file_name, tile_url, zoom=12):
             # TODO rectangles instead of polygons
             ET.SubElement(tracks_g,
                           'polygon',
-                          {'points': " ".join([",".join([str(y) for y in x]) for x in rect])})
+                          {'points': " ".join([",".join([str(y) for y in x]) for x in rect]),
+                           'opacity': '0.5'})
     tree = ET.ElementTree(element=top)
     ET.indent(tree)
     tree.write(file_name)
