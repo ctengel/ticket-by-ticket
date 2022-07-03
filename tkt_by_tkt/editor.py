@@ -24,6 +24,12 @@ def gmcsv2tbtjson(gmcsv_file, my_map, sync=False, rm_cities=False):
             assert rm_cities
             my_map.del_city(city)
 
+def autolengths(my_map):
+    """Set all lengths based on shortest run"""
+    shortest = min([x.distance() for x in my_map.get_routes()])
+    for route in my_map.get_routes():
+        route.set_length(int(route.distance() / shortest))
+
 def _import(args, my_map):
     rm_cities = False
     if args.sync:
@@ -91,6 +97,10 @@ def _pnt(args, my_map):
     my_map.del_city(args.city)
     return True
 
+def _lengths(args, my_map):
+    autolengths(my_map)
+    return True
+
 def cli():
     """Command Line editor interface"""
     parser = argparse.ArgumentParser()
@@ -124,6 +134,9 @@ def cli():
     parser_import.add_argument('mapsvg')
     parser_import.add_argument('-t', '--tile-url')
     parser_import.set_defaults(func=_export)
+
+    parser_lengths = subparsers.add_parser('lengths')
+    parser_lengths.set_defaults(func=_lengths)
 
     args = parser.parse_args()
 

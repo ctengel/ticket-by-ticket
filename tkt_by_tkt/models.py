@@ -70,6 +70,9 @@ class Map:
                 min(lats) - (max(lats) - min(lats)) / border,
                 max(longs) + (max(longs) - min(longs)) / border]
 
+    def get_routes(self):
+        """Get all route objects"""
+        return self._routes
 
 
 class City:
@@ -164,3 +167,10 @@ class Route:
         # TODO have this be the main entry point instead of Map.del_route()
         self._cities[0].del_route(self._cities[1].get_name())
         self._cities[1].del_route(self._cities[0].get_name())
+
+    def distance(self):
+        """Return approximate distance in meters"""
+        coords = [x.where() for x in self._cities]
+        latdist = (coords[1][0] - coords[0][0]) * 110947.2
+        londist = (coords[1][1] - coords[0][1]) * 87843.36
+        return (latdist**2 + londist**2)**(0.5)
