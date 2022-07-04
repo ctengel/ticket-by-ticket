@@ -3,10 +3,10 @@
 import xml.etree.ElementTree as ET
 import math
 
-RECT_X = 100.0
-RECT_Y = 40.0
-CIRC_R = "20"
-TXT_OFFSET = 30
+RECT_X = 75.0
+RECT_Y = 30.0
+CIRC_R = "15"
+TXT_OFFSET = 22
 
 def deg2num(lat_deg, lon_deg, zoom):
     """Find a tile"""
