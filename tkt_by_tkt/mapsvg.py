@@ -55,7 +55,7 @@ def rectsform(line, rects):
     return outrect
 
 
-def draw_map(my_map, file_name, tile_url, zoom=12, lines=False):
+def draw_map(my_map, file_name, tile_url, zoom=11, lines=False):
     """Draw map to SVG"""
     extremes = my_map.get_geo_real()
     upper_left, _ = deg2num(extremes[0], extremes[1], zoom)
