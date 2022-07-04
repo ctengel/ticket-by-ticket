@@ -5,12 +5,88 @@
       -73.984889
     ],
     "Harlem": [
-      40.8053547,
-      -73.9387886
+      40.8198407,
+      -73.9247125
     ],
     "Jamaica": [
       40.6994569,
       -73.8084128
+    ],
+    "White Plains": [
+      41.0333512,
+      -73.7752378
+    ],
+    "Port Chester": [
+      40.9951863,
+      -73.669206
+    ],
+    "Elmsford": [
+      41.0547553,
+      -73.8206191
+    ],
+    "Tarrytown": [
+      41.0723334,
+      -73.8658304
+    ],
+    "Hawthorne": [
+      41.1098306,
+      -73.8016117
+    ],
+    "Goldens Bridge": [
+      41.2944774,
+      -73.6776374
+    ],
+    "Mahopac": [
+      41.3657518,
+      -73.740919
+    ],
+    "Brewster": [
+      41.4020511,
+      -73.6205289
+    ],
+    "Mount Vernon": [
+      40.9108142,
+      -73.8486071
+    ],
+    "Poughkeepsie": [
+      41.7105678,
+      -73.9377675
+    ],
+    "Beacon": [
+      41.4981212,
+      -73.9833068
+    ],
+    "Hopewell Junction": [
+      41.5851346,
+      -73.8064504
+    ],
+    "New Rochelle": [
+      40.9087325,
+      -73.7864183
+    ],
+    "Pelham": [
+      40.9111373,
+      -73.8138776
+    ],
+    "Yonkers": [
+      40.9344007,
+      -73.9003055
+    ],
+    "Van Cortlandt": [
+      40.90757,
+      -73.884876
+    ],
+    "Sunnyside": [
+      40.7482404,
+      -73.9276951
+    ],
+    "Astoria": [
+      40.7677448,
+      -73.9078682
+    ],
+    "Hunts Point": [
+      40.8117208,
+      -73.8988853
     ]
   },
   "routes": [
@@ -19,20 +95,193 @@
         "Midtown",
         "Harlem"
       ],
+      "length": 3,
+      "tracks": [
+        "black",
+        "yellow"
+      ]
+    },
+    {
+      "cities": [
+        "Mount Vernon",
+        "White Plains"
+      ],
+      "length": 6,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "White Plains",
+        "Elmsford"
+      ],
+      "length": 1,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Tarrytown",
+        "Elmsford"
+      ],
+      "length": 1,
+      "tracks": [
+        "green"
+      ]
+    },
+    {
+      "cities": [
+        "White Plains",
+        "Port Chester"
+      ],
+      "length": 4,
+      "tracks": [
+        "blue"
+      ]
+    },
+    {
+      "cities": [
+        "Hawthorne",
+        "Elmsford"
+      ],
       "length": 2,
       "tracks": [
-        "random",
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Hawthorne",
+        "White Plains"
+      ],
+      "length": 3,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Hawthorne",
+        "Goldens Bridge"
+      ],
+      "length": 9,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Mahopac",
+        "Goldens Bridge"
+      ],
+      "length": 3,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Mahopac",
+        "Brewster"
+      ],
+      "length": 4,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Goldens Bridge",
+        "Brewster"
+      ],
+      "length": 5,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Mahopac",
+        "Hawthorne"
+      ],
+      "length": 11,
+      "tracks": [
+        "green"
+      ]
+    },
+    {
+      "cities": [
+        "Midtown",
+        "Sunnyside"
+      ],
+      "length": 2,
+      "tracks": [
+        "blank",
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Jamaica",
+        "Sunnyside"
+      ],
+      "length": 4,
+      "tracks": [
+        "black",
+        "black"
+      ]
+    },
+    {
+      "cities": [
+        "Astoria",
+        "Sunnyside"
+      ],
+      "length": 1,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Astoria",
+        "Hunts Point"
+      ],
+      "length": 2,
+      "tracks": [
+        "blank",
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Harlem",
+        "Hunts Point"
+      ],
+      "length": 1,
+      "tracks": [
+        "black"
+      ]
+    },
+    {
+      "cities": [
+        "New Rochelle",
+        "Hunts Point"
+      ],
+      "length": 5,
+      "tracks": [
+        "blank",
         "blank"
       ]
     },
     {
       "cities": [
         "Midtown",
-        "Jamaica"
+        "Yonkers"
       ],
-      "length": 4,
+      "length": 8,
       "tracks": [
-        "random",
         "blank"
       ]
     }
