@@ -56,7 +56,7 @@ class Map:
                 found = item
                 found_index = index
         assert found
-        assert found_index
+        assert found_index is not None
         found.destruct()
         del self._routes[found_index]
 
