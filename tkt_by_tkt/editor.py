@@ -46,6 +46,7 @@ def autocolors(my_map):
 def _import(args, my_map):
     rm_cities = False
     if args.sync:
+        # TODO allow deleting cities even if there are routes attached
         rm_cities = args.force
     else:
         # TODO allow force w/o sync to just make a new object and overwrite

@@ -26,7 +26,7 @@ class Map:
 
     def all_city_names(self):
         """All names"""
-        return self._cities.keys()
+        return list(self._cities.keys())
 
     def export_cities(self):
         """Cities with locations"""
