@@ -59,6 +59,102 @@
     "Woodside": [
       40.7466502,
       -73.8948924
+    ],
+    "Danbury": [
+      41.3973815,
+      -73.4417016
+    ],
+    "Norwalk": [
+      41.0993138,
+      -73.4184523
+    ],
+    "Milford": [
+      41.206841,
+      -73.1051786
+    ],
+    "Waterbury": [
+      41.5544737,
+      -73.0471876
+    ],
+    "Nyack": [
+      41.100842,
+      -73.964514
+    ],
+    "Spring Valley": [
+      41.1120061,
+      -74.0449373
+    ],
+    "Suffern": [
+      41.1187056,
+      -74.1581145
+    ],
+    "Haverstraw": [
+      41.2036413,
+      -73.9791401
+    ],
+    "Babylon": [
+      40.6979924,
+      -73.3339855
+    ],
+    "Valley Stream": [
+      40.6660133,
+      -73.7215061
+    ],
+    "Hempstead": [
+      40.7121622,
+      -73.6249797
+    ],
+    "Hicksville": [
+      40.7677159,
+      -73.5260812
+    ],
+    "Denville": [
+      40.8841361,
+      -74.4797419
+    ],
+    "Summit": [
+      40.7184329,
+      -74.3659948
+    ],
+    "Downtown": [
+      40.7209093,
+      -74.0064371
+    ],
+    "Newark": [
+      40.741695,
+      -74.1480304
+    ],
+    "Pompton": [
+      41.0034167,
+      -74.3000536
+    ],
+    "Trenton": [
+      40.2368388,
+      -74.7828388
+    ],
+    "Bridgewater": [
+      40.5559914,
+      -74.5570525
+    ],
+    "Rahway": [
+      40.6024282,
+      -74.2812071
+    ],
+    "Harriman": [
+      41.2993486,
+      -74.1371552
+    ],
+    "Campbell Hall": [
+      41.451298,
+      -74.2662688
+    ],
+    "Chester": [
+      41.3615344,
+      -74.2555355
+    ],
+    "Port Jervis": [
+      41.4151804,
+      -74.6053088
     ]
   },
   "routes": [
@@ -67,7 +163,7 @@
         "White Plains",
         "Port Chester"
       ],
-      "length": 1,
+      "length": 2,
       "tracks": [
         "black"
       ]
@@ -77,9 +173,9 @@
         "Mahopac",
         "Goldens Bridge"
       ],
-      "length": 1,
+      "length": 2,
       "tracks": [
-        "white"
+        "black"
       ]
     },
     {
@@ -87,9 +183,9 @@
         "Mahopac",
         "Brewster"
       ],
-      "length": 1,
+      "length": 2,
       "tracks": [
-        "yellow"
+        "blank"
       ]
     },
     {
@@ -97,9 +193,9 @@
         "Goldens Bridge",
         "Brewster"
       ],
-      "length": 1,
+      "length": 3,
       "tracks": [
-        "white"
+        "blank"
       ]
     },
     {
@@ -107,7 +203,7 @@
         "Midtown",
         "Yonkers"
       ],
-      "length": 2,
+      "length": 5,
       "tracks": [
         "blue"
       ]
@@ -117,9 +213,9 @@
         "Midtown",
         "Woodside"
       ],
-      "length": 1,
+      "length": 2,
       "tracks": [
-        "red"
+        "blank"
       ]
     },
     {
@@ -127,9 +223,9 @@
         "Midtown",
         "Fordham"
       ],
-      "length": 1,
+      "length": 3,
       "tracks": [
-        "blank"
+        "white"
       ]
     },
     {
@@ -137,7 +233,7 @@
         "Woodside",
         "Jamaica"
       ],
-      "length": 1,
+      "length": 2,
       "tracks": [
         "blank"
       ]
@@ -147,9 +243,9 @@
         "White Plains",
         "Tarrytown"
       ],
-      "length": 1,
+      "length": 2,
       "tracks": [
-        "blank"
+        "red"
       ]
     },
     {
@@ -157,9 +253,9 @@
         "White Plains",
         "Goldens Bridge"
       ],
-      "length": 3,
+      "length": 7,
       "tracks": [
-        "green"
+        "orange"
       ]
     },
     {
@@ -167,7 +263,7 @@
         "Tarrytown",
         "Mahopac"
       ],
-      "length": 4,
+      "length": 8,
       "tracks": [
         "blank"
       ]
@@ -177,7 +273,7 @@
         "Tarrytown",
         "Beacon"
       ],
-      "length": 6,
+      "length": 12,
       "tracks": [
         "blank"
       ]
@@ -187,9 +283,9 @@
         "Port Chester",
         "New Rochelle"
       ],
-      "length": 1,
+      "length": 3,
       "tracks": [
-        "blank"
+        "black"
       ]
     },
     {
@@ -197,9 +293,9 @@
         "Poughkeepsie",
         "Beacon"
       ],
-      "length": 3,
+      "length": 6,
       "tracks": [
-        "blank"
+        "orange"
       ]
     },
     {
@@ -207,9 +303,9 @@
         "Poughkeepsie",
         "Hopewell Junction"
       ],
-      "length": 2,
+      "length": 4,
       "tracks": [
-        "blank"
+        "orange"
       ]
     },
     {
@@ -217,9 +313,9 @@
         "Brewster",
         "Hopewell Junction"
       ],
-      "length": 3,
+      "length": 6,
       "tracks": [
-        "blue"
+        "red"
       ]
     },
     {
@@ -227,9 +323,9 @@
         "Beacon",
         "Hopewell Junction"
       ],
-      "length": 2,
+      "length": 4,
       "tracks": [
-        "yellow"
+        "black"
       ]
     },
     {
@@ -237,7 +333,7 @@
         "New Rochelle",
         "Fordham"
       ],
-      "length": 1,
+      "length": 2,
       "tracks": [
         "blank"
       ]
@@ -247,7 +343,7 @@
         "New Rochelle",
         "Woodside"
       ],
-      "length": 2,
+      "length": 5,
       "tracks": [
         "blank"
       ]
@@ -257,9 +353,9 @@
         "Yonkers",
         "Tarrytown"
       ],
-      "length": 1,
+      "length": 3,
       "tracks": [
-        "blank"
+        "orange"
       ]
     },
     {
@@ -267,9 +363,369 @@
         "Yonkers",
         "Fordham"
       ],
+      "length": 2,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Danbury",
+        "Brewster"
+      ],
+      "length": 4,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Danbury",
+        "Waterbury"
+      ],
+      "length": 9,
+      "tracks": [
+        "red"
+      ]
+    },
+    {
+      "cities": [
+        "Danbury",
+        "Norwalk"
+      ],
+      "length": 8,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Milford",
+        "Norwalk"
+      ],
+      "length": 7,
+      "tracks": [
+        "black"
+      ]
+    },
+    {
+      "cities": [
+        "Milford",
+        "Waterbury"
+      ],
+      "length": 9,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Norwalk",
+        "Port Chester"
+      ],
+      "length": 6,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Nyack",
+        "Tarrytown"
+      ],
+      "length": 2,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Nyack",
+        "Spring Valley"
+      ],
       "length": 1,
       "tracks": [
-        "green"
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Nyack",
+        "Haverstraw"
+      ],
+      "length": 2,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Spring Valley",
+        "Newark"
+      ],
+      "length": 10,
+      "tracks": [
+        "yellow"
+      ]
+    },
+    {
+      "cities": [
+        "Spring Valley",
+        "Suffern"
+      ],
+      "length": 2,
+      "tracks": [
+        "purple"
+      ]
+    },
+    {
+      "cities": [
+        "Spring Valley",
+        "Haverstraw"
+      ],
+      "length": 2,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Suffern",
+        "Newark"
+      ],
+      "length": 10,
+      "tracks": [
+        "orange"
+      ]
+    },
+    {
+      "cities": [
+        "Suffern",
+        "Harriman"
+      ],
+      "length": 5,
+      "tracks": [
+        "blue"
+      ]
+    },
+    {
+      "cities": [
+        "Babylon",
+        "Hicksville"
+      ],
+      "length": 4,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Babylon",
+        "Valley Stream"
+      ],
+      "length": 8,
+      "tracks": [
+        "white"
+      ]
+    },
+    {
+      "cities": [
+        "Hempstead",
+        "Valley Stream"
+      ],
+      "length": 2,
+      "tracks": [
+        "red"
+      ]
+    },
+    {
+      "cities": [
+        "Jamaica",
+        "Valley Stream"
+      ],
+      "length": 2,
+      "tracks": [
+        "red"
+      ]
+    },
+    {
+      "cities": [
+        "Jamaica",
+        "Hicksville"
+      ],
+      "length": 6,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Denville",
+        "Summit"
+      ],
+      "length": 5,
+      "tracks": [
+        "orange"
+      ]
+    },
+    {
+      "cities": [
+        "Denville",
+        "Newark"
+      ],
+      "length": 8,
+      "tracks": [
+        "white"
+      ]
+    },
+    {
+      "cities": [
+        "Summit",
+        "Newark"
+      ],
+      "length": 4,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Pompton",
+        "Newark"
+      ],
+      "length": 8,
+      "tracks": [
+        "black"
+      ]
+    },
+    {
+      "cities": [
+        "Pompton",
+        "Chester"
+      ],
+      "length": 10,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Trenton",
+        "Bridgewater"
+      ],
+      "length": 10,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Trenton",
+        "Rahway"
+      ],
+      "length": 15,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Bridgewater",
+        "Newark"
+      ],
+      "length": 10,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Rahway",
+        "Newark"
+      ],
+      "length": 4,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Harriman",
+        "Chester"
+      ],
+      "length": 3,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Harriman",
+        "Campbell Hall"
+      ],
+      "length": 5,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Chester",
+        "Campbell Hall"
+      ],
+      "length": 2,
+      "tracks": [
+        "purple"
+      ]
+    },
+    {
+      "cities": [
+        "Chester",
+        "Port Jervis"
+      ],
+      "length": 7,
+      "tracks": [
+        "yellow"
+      ]
+    },
+    {
+      "cities": [
+        "Campbell Hall",
+        "Port Jervis"
+      ],
+      "length": 7,
+      "tracks": [
+        "yellow"
+      ]
+    },
+    {
+      "cities": [
+        "Downtown",
+        "Midtown"
+      ],
+      "length": 1,
+      "tracks": [
+        "black"
+      ]
+    },
+    {
+      "cities": [
+        "Downtown",
+        "Newark"
+      ],
+      "length": 3,
+      "tracks": [
+        "blank"
+      ]
+    },
+    {
+      "cities": [
+        "Midtown",
+        "Newark"
+      ],
+      "length": 3,
+      "tracks": [
+        "blank"
       ]
     }
   ]
