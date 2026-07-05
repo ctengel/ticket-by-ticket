@@ -1,0 +1,677 @@
+openapi: 3.1.0
+info:
+  title: TBT Game Server API
+  version: "1.0"
+  description: >
+    RESTful API for playing a game (per rules.md) on any TBT map
+    (per map.schema.json). Design notes in api.md. Both human clients and
+    robots use this same API; the server is the authoritative rules engine.
+servers:
+  - url: /v1
+
+paths:
+  /games:
+    post:
+      operationId: createGame
+      summary: Create a game from a TBT map JSON
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameCreate'
+      responses:
+        "201":
+          description: Game created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  game_id:
+                    type: string
+                required: [game_id]
+        "422":
+          $ref: '#/components/responses/Illegal'
+
+  /games/{g}:
+    parameters:
+      - $ref: '#/components/parameters/GameId'
+    get:
+      operationId: getGame
+      summary: Public game state (poll this; ETag is the state_version)
+      responses:
+        "200":
+          description: Current public state
+          headers:
+            ETag:
+              description: Equals the state_version
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameState'
+        "304":
+          description: Not modified (If-None-Match matched state_version)
+        "404":
+          $ref: '#/components/responses/NotFound'
+
+  /games/{g}/map:
+    parameters:
+      - $ref: '#/components/parameters/GameId'
+    get:
+      operationId: getMap
+      summary: The map the game is played on
+      responses:
+        "200":
+          description: The TBT map JSON, with random lane colors resolved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Map'
+        "404":
+          $ref: '#/components/responses/NotFound'
+
+  /games/{g}/players:
+    parameters:
+      - $ref: '#/components/parameters/GameId'
+    post:
+      operationId: joinGame
+      summary: Join the game; the token is shown only once
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                kind:
+                  type: string
+                  enum: [human, bot]
+                  default: human
+              required: [name]
+      responses:
+        "201":
+          description: Seat assigned (join order is turn order)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  player_id:
+                    type: string
+                  token:
+                    type: string
+                    description: Secret bearer token for this player
+                required: [player_id, token]
+        "409":
+          $ref: '#/components/responses/Conflict'
+        "404":
+          $ref: '#/components/responses/NotFound'
+
+  /games/{g}/players/{p}:
+    parameters:
+      - $ref: '#/components/parameters/GameId'
+      - name: p
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getPlayerPrivate
+      summary: Private view of one's own hand, tickets, and pending offer
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Private player state
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerPrivate'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "403":
+          description: Token does not belong to player p
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        "404":
+          $ref: '#/components/responses/NotFound'
+
+  /games/{g}/start:
+    parameters:
+      - $ref: '#/components/parameters/GameId'
+    post:
+      operationId: startGame
+      summary: Begin play (any joined player, once >= 2 have joined)
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Hands dealt, setup ticket offers out, face-up row revealed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameState'
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "409":
+          $ref: '#/components/responses/Conflict'
+        "404":
+          $ref: '#/components/responses/NotFound'
+
+  /games/{g}/card-draws:
+    parameters:
+      - $ref: '#/components/parameters/GameId'
+    post:
+      operationId: drawCard
+      summary: "Turn action: draw one train card (deck or face-up)"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CardDrawRequest'
+      responses:
+        "201":
+          description: Card drawn
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  card:
+                    $ref: '#/components/schemas/CardColor'
+                  draws_remaining:
+                    type: integer
+                    description: 0 ends the turn; a face-up wild always ends it
+                required: [card, draws_remaining]
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "409":
+          $ref: '#/components/responses/Conflict'
+        "422":
+          $ref: '#/components/responses/Illegal'
+
+  /games/{g}/claims:
+    parameters:
+      - $ref: '#/components/parameters/GameId'
+    post:
+      operationId: claimRoute
+      summary: "Turn action: claim one track lane of a route"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClaimRequest'
+      responses:
+        "201":
+          description: Lane claimed; route points banked
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  points:
+                    type: integer
+                    description: Route points per the rules.md length table
+                  cars_remaining:
+                    type: integer
+                  resolution:
+                    type: object
+                    description: Reserved for tunnel/ferry extensions (unused in v1)
+                required: [points, cars_remaining]
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "409":
+          $ref: '#/components/responses/Conflict'
+        "422":
+          $ref: '#/components/responses/Illegal'
+
+  /games/{g}/ticket-draws:
+    parameters:
+      - $ref: '#/components/parameters/GameId'
+    post:
+      operationId: drawTickets
+      summary: "Turn action: request a destination ticket offer"
+      security:
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Offer dealt; turn now expects a ticket-keep
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  offer:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Ticket'
+                required: [offer]
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "409":
+          $ref: '#/components/responses/Conflict'
+        "422":
+          $ref: '#/components/responses/Illegal'
+
+  /games/{g}/ticket-keeps:
+    parameters:
+      - $ref: '#/components/parameters/GameId'
+    post:
+      operationId: keepTickets
+      summary: Resolve a pending ticket offer (turn or setup)
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tickets:
+                  type: array
+                  description: ticket_ids to keep, from the pending offer
+                  items:
+                    type: integer
+              required: [tickets]
+      responses:
+        "201":
+          description: Tickets kept; unkept ones returned to the ticket deck
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  kept:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Ticket'
+                required: [kept]
+        "401":
+          $ref: '#/components/responses/Unauthorized'
+        "409":
+          $ref: '#/components/responses/Conflict'
+        "422":
+          $ref: '#/components/responses/Illegal'
+
+  /games/{g}/log:
+    parameters:
+      - $ref: '#/components/parameters/GameId'
+    get:
+      operationId: getLog
+      summary: Ordered public event log (hidden info stays hidden)
+      parameters:
+        - name: since
+          in: query
+          required: false
+          description: Return only events with seq greater than this
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Events in seq order
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LogEvent'
+        "404":
+          $ref: '#/components/responses/NotFound'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Player token issued by POST /games/{g}/players
+
+  parameters:
+    GameId:
+      name: g
+      in: path
+      required: true
+      schema:
+        type: string
+
+  responses:
+    NotFound:
+      description: No such game or player
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid bearer token
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Not this player's turn, or wrong phase/follow-up for this action
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Illegal:
+      description: Action is yours to take but violates the rules
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  schemas:
+    # --- Map objects: mirror design/map.schema.json field-for-field ---
+    TrackColor:
+      type: string
+      enum: [random, blank, blue, red, orange, green, yellow, purple, white, black]
+    Map:
+      type: object
+      description: A TBT map per map.schema.json
+      properties:
+        geometry:
+          type: object
+          description: Passed through untouched for board-rendering clients
+          properties:
+            real:
+              type: array
+              items:
+                type: number
+              minItems: 4
+              maxItems: 4
+            resolution:
+              type: array
+              items:
+                type: number
+              minItems: 2
+              maxItems: 2
+            image:
+              type: string
+        cities:
+          type: object
+          description: city name -> [lat, lng]
+          patternProperties:
+            ".":
+              type: array
+              items:
+                type: number
+              minItems: 2
+              maxItems: 2
+        routes:
+          type: array
+          items:
+            type: object
+            properties:
+              cities:
+                type: array
+                items:
+                  type: string
+                minItems: 2
+                maxItems: 2
+              length:
+                type: number
+              tracks:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrackColor'
+            required: [cities]
+        tickets:
+          type: array
+          items:
+            type: object
+            properties:
+              cities:
+                type: array
+                items:
+                  type: string
+                minItems: 2
+                maxItems: 2
+              points:
+                type: number
+      required: [cities]
+
+    # --- Game objects ---
+    CardColor:
+      type: string
+      description: Train card colors; wild matches anything
+      enum: [blue, red, orange, green, yellow, purple, white, black, wild]
+    RouteId:
+      type: string
+      description: The two city names sorted lexicographically, joined with "|"
+      examples: ["NYC|Philadelphia"]
+    GameOptions:
+      type: object
+      description: Overrides for the defaults implied by rules.md
+      properties:
+        starting_cars:
+          type: integer
+          default: 45
+        starting_hand:
+          type: integer
+          default: 4
+        faceup_count:
+          type: integer
+          default: 5
+        ticket_offer:
+          type: integer
+          default: 3
+        ticket_keep_min:
+          type: integer
+          default: 1
+        setup_ticket_keep_min:
+          type: integer
+          default: 1
+        last_round_cars:
+          type: integer
+          default: 2
+        parallel_min_players:
+          type: integer
+          default: 4
+          description: Below this player count only one lane per route may be claimed
+    GameCreate:
+      type: object
+      properties:
+        map:
+          $ref: '#/components/schemas/Map'
+        options:
+          $ref: '#/components/schemas/GameOptions'
+      required: [map]
+    Claim:
+      type: object
+      properties:
+        route:
+          $ref: '#/components/schemas/RouteId'
+        track:
+          type: integer
+          description: 0-based index into the route's tracks array
+        player:
+          type: string
+      required: [route, track, player]
+    PlayerPublic:
+      type: object
+      properties:
+        player_id:
+          type: string
+        name:
+          type: string
+        kind:
+          type: string
+          enum: [human, bot]
+        cars:
+          type: integer
+        hand_count:
+          type: integer
+        ticket_count:
+          type: integer
+        claimed_routes:
+          type: integer
+      required: [player_id, name, cars, hand_count, ticket_count]
+    Ticket:
+      type: object
+      properties:
+        ticket_id:
+          type: integer
+        cities:
+          type: array
+          items:
+            type: string
+          minItems: 2
+          maxItems: 2
+        points:
+          type: number
+      required: [ticket_id, cities, points]
+    PlayerTicket:
+      allOf:
+        - $ref: '#/components/schemas/Ticket'
+        - type: object
+          properties:
+            completed:
+              type: boolean
+              description: Whether the owner's claims currently connect the cities
+    PlayerPrivate:
+      allOf:
+        - $ref: '#/components/schemas/PlayerPublic'
+        - type: object
+          properties:
+            hand:
+              type: array
+              items:
+                $ref: '#/components/schemas/CardColor'
+            tickets:
+              type: array
+              items:
+                $ref: '#/components/schemas/PlayerTicket'
+            pending_offer:
+              type: array
+              items:
+                $ref: '#/components/schemas/Ticket'
+          required: [hand, tickets]
+    ScoreLine:
+      type: object
+      properties:
+        player_id:
+          type: string
+        route_points:
+          type: integer
+        tickets_gained:
+          type: integer
+        tickets_lost:
+          type: integer
+        longest_path_bonus:
+          type: integer
+        total:
+          type: integer
+      required: [player_id, route_points, tickets_gained, tickets_lost, longest_path_bonus, total]
+    GameState:
+      type: object
+      properties:
+        game_id:
+          type: string
+        state_version:
+          type: integer
+        phase:
+          type: string
+          enum: [setup, active, last_round, finished]
+        current_player:
+          type: [string, "null"]
+        expecting:
+          type: string
+          enum: [turn, second_card, ticket_keep, setup_ticket_keeps]
+        faceup:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardColor'
+        deck_count:
+          type: integer
+        discard_count:
+          type: integer
+        claims:
+          type: array
+          items:
+            $ref: '#/components/schemas/Claim'
+        players:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlayerPublic'
+        scores:
+          type: [array, "null"]
+          description: Populated when phase is finished
+          items:
+            $ref: '#/components/schemas/ScoreLine'
+      required: [game_id, state_version, phase, faceup, deck_count, claims, players]
+    CardDrawRequest:
+      type: object
+      properties:
+        source:
+          type: string
+          enum: [deck, faceup]
+        card:
+          $ref: '#/components/schemas/CardColor'
+          description: Required when source is faceup
+      required: [source]
+    ClaimRequest:
+      type: object
+      properties:
+        route:
+          $ref: '#/components/schemas/RouteId'
+        track:
+          type: integer
+        cards:
+          type: array
+          description: Exactly length cards, one color plus wilds matching the lane
+          items:
+            $ref: '#/components/schemas/CardColor'
+      required: [route, track, cards]
+    LogEvent:
+      type: object
+      description: >
+        Public record of one action. Deck draws omit the card; ticket events
+        carry only counts; claims reveal the cards spent.
+      properties:
+        seq:
+          type: integer
+        player:
+          type: string
+        type:
+          type: string
+          enum: [join, start, card_draw, claim, ticket_draw, ticket_keep, last_round, game_end]
+        source:
+          type: string
+          enum: [deck, faceup]
+        card:
+          $ref: '#/components/schemas/CardColor'
+        route:
+          $ref: '#/components/schemas/RouteId'
+        track:
+          type: integer
+        cards:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardColor'
+        offered:
+          type: integer
+        kept:
+          type: integer
+      required: [seq, type]
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Machine-readable code, e.g. lane_claimed, wild_needs_full_draw
+        message:
+          type: string
+      required: [error]
