@@ -20,10 +20,12 @@ repository = "https://github.com/ctengel/ticket-by-ticket"
 
 [project.optional-dependencies]
 server = ["fastapi", "uvicorn"]
+bot = ["requests"]
 
 [project.scripts]
 tbt-edit = "tkt_by_tkt.editor:cli"
 tbt-server = "tkt_by_tkt.server:main"
+tbt-bot = "tkt_by_tkt.bot.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["tkt_by_tkt"]
+include = ["tkt_by_tkt*"]

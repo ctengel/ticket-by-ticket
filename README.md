@@ -117,6 +117,30 @@ curl -s -X POST localhost:8080/v1/games \
      -d "{\"map\": $(cat maps/nyc287.json)}"
 ```
 
+## Bot
+
+The bot (component 7 in the design diagram) plays a game over the server API,
+either on its own or as an advisor to a human player. It is a pure API client
+(`design/bot.md` describes the internals) with two modes:
+
+```
+pip install -e .[bot]
+
+# full auto: join the game and play it to the end (someone else starts it)
+tbt-bot auto --server http://localhost:8080 --game GAMEID [--name "TBT Bot"]
+
+# advisor: recommend a move for your own seat without making it
+tbt-bot advise --server http://localhost:8080 --game GAMEID \
+        --player p1 --token YOURTOKEN [--json] [--watch]
+```
+
+Strategy is a deterministic heuristic with tunable knobs. `--profile
+easy|normal|hard` picks a preset; individual knobs override it: `--skill`
+(lower adds mistakes), `--ticket-affinity`, `--long-route-bonus`,
+`--build-speed`, `--wild-frugality`, `--keep-greed`. Add `--seed` for
+reproducible decisions. In auto mode the bot prints its seat's token on join
+so the seat can be resumed later with `--player`/`--token`.
+
 ## Acknowlegements
 
 * Map tiles by [Stamen Design](http://stamen.com), [CC BY 3.0](http://creativecommons.org/licenses/by/3.0). Data by [OpenStreetMap](http://openstreetmap.org), under [CC BY SA](http://creativecommons.org/licenses/by-sa/3.0).
