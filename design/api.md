@@ -156,7 +156,9 @@ reports the card received and `draws_remaining` for this turn. Per `rules.md`
 a turn is two draws, except taking a face-up wild is the whole turn (and a
 face-up wild is `422 wild_needs_full_draw` as a second draw). Face-up gaps are
 refilled from the deck immediately; the discard pile is reshuffled into the
-deck when the deck empties.
+deck when the deck empties. Per `rules.md`, whenever three or more face-up
+cards are wild the server discards and redeals the whole face-up row (a
+`faceup_reshuffle` log event).
 
 **Claim a route lane** — `POST /games/{g}/claims` with
 
@@ -167,8 +169,9 @@ deck when the deck empties.
 `cards` come from the player's hand, must number exactly the route's
 `length`, and must be one color (plus any number of wilds) matching the lane's
 color — any one color for a `blank` lane. The server also enforces the
-parallel-track rule: with fewer than `parallel_min_players` players, once any
-lane of a route is claimed the rest of that route is closed. On success the
+parallel-track rules: with fewer than `parallel_min_players` players, once any
+lane of a route is claimed the rest of that route is closed, and regardless of
+player count a player may claim at most one lane per route. On success the
 player's cars decrease by `length`, the route points (per the `rules.md`
 table) are banked, and if the player ends the turn with `last_round_cars` or
 fewer cars the game enters `last_round`.

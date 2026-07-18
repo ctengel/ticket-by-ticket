@@ -92,7 +92,30 @@ Map:
 
 (see `map.schema.json`)
 
-Rules
+## Rules
+
+See `rules.md` for core game mechanics.
+
+## Game server API
+
+See `design/api.md` for the RESTful game server API used by human and bot
+clients (machine-readable spec: `design/api.openapi.yaml`).
+
+To run the server (implemented with FastAPI, kept as an optional extra so the
+map-editing tools stay dependency-free):
+
+```
+pip install -e .[server]
+tbt-server [--host 127.0.0.1] [--port 8080]
+```
+
+Then create a game from any TBT map JSON, e.g.:
+
+```
+curl -s -X POST localhost:8080/v1/games \
+     -H 'Content-Type: application/json' \
+     -d "{\"map\": $(cat maps/nyc287.json)}"
+```
 
 ## Acknowlegements
 
