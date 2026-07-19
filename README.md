@@ -92,7 +92,69 @@ Map:
 
 (see `map.schema.json`)
 
-Rules
+## Rules
+
+See `rules.md` for core game mechanics.
+
+## Game server API
+
+See `design/api.md` for the RESTful game server API used by human and bot
+clients (machine-readable spec: `design/api.openapi.yaml`).
+
+To run the server (implemented with FastAPI, kept as an optional extra so the
+map-editing tools stay dependency-free):
+
+```
+pip install -e .[server]
+tbt-server [--host 127.0.0.1] [--port 8080]
+```
+
+Then create a game from any TBT map JSON, e.g.:
+
+```
+curl -s -X POST localhost:8080/v1/games \
+     -H 'Content-Type: application/json' \
+     -d "{\"map\": $(cat maps/nyc287.json)}"
+```
+
+## Web UI
+
+The server also serves a browser client (component 6 in the design diagram)
+for humans: run `tbt-server` and open `http://127.0.0.1:8080/`. It plays one
+seat in an existing game — create the game and join players with the API as
+above, then enter the game ID, player ID, and token from those calls (or open
+a prefilled link, `/ui/?game=G&player=P&token=T`). The board is drawn over
+OSM slippy-map tiles (`https://tile.openstreetmap.org` by default; any
+`{z}/{x}/{y}` tile URL template can be substituted on the join form). Click a
+face-up card or the deck to draw, click a route's lane on the board to claim
+it, and resolve destination-ticket offers from the sidebar; the server
+remains the rules engine, so illegal moves just come back as error banners.
+The UI can point at another tbt-server by filling in the server URL field
+(the API allows cross-origin requests).
+
+## Bot
+
+The bot (component 7 in the design diagram) plays a game over the server API,
+either on its own or as an advisor to a human player. It is a pure API client
+(`design/bot.md` describes the internals) with two modes:
+
+```
+pip install -e .[bot]
+
+# full auto: join the game and play it to the end (someone else starts it)
+tbt-bot auto --server http://localhost:8080 --game GAMEID [--name "TBT Bot"]
+
+# advisor: recommend a move for your own seat without making it
+tbt-bot advise --server http://localhost:8080 --game GAMEID \
+        --player p1 --token YOURTOKEN [--json] [--watch]
+```
+
+Strategy is a deterministic heuristic with tunable knobs. `--profile
+easy|normal|hard` picks a preset; individual knobs override it: `--skill`
+(lower adds mistakes), `--ticket-affinity`, `--long-route-bonus`,
+`--build-speed`, `--wild-frugality`, `--keep-greed`. Add `--seed` for
+reproducible decisions. In auto mode the bot prints its seat's token on join
+so the seat can be resumed later with `--player`/`--token`.
 
 ## Acknowlegements
 

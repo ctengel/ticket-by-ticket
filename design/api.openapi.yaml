@@ -647,7 +647,7 @@ components:
           type: string
         type:
           type: string
-          enum: [join, start, card_draw, claim, ticket_draw, ticket_keep, last_round, game_end]
+          enum: [join, start, card_draw, claim, ticket_draw, ticket_keep, faceup_reshuffle, last_round, game_end]
         source:
           type: string
           enum: [deck, faceup]
