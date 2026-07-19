@@ -29,3 +29,6 @@ tbt-bot = "tkt_by_tkt.bot.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["tkt_by_tkt*"]
+
+[tool.setuptools.package-data]
+tkt_by_tkt = ["webui/*"]

@@ -117,6 +117,21 @@ curl -s -X POST localhost:8080/v1/games \
      -d "{\"map\": $(cat maps/nyc287.json)}"
 ```
 
+## Web UI
+
+The server also serves a browser client (component 6 in the design diagram)
+for humans: run `tbt-server` and open `http://127.0.0.1:8080/`. It plays one
+seat in an existing game — create the game and join players with the API as
+above, then enter the game ID, player ID, and token from those calls (or open
+a prefilled link, `/ui/?game=G&player=P&token=T`). The board is drawn over
+OSM slippy-map tiles (`https://tile.openstreetmap.org` by default; any
+`{z}/{x}/{y}` tile URL template can be substituted on the join form). Click a
+face-up card or the deck to draw, click a route's lane on the board to claim
+it, and resolve destination-ticket offers from the sidebar; the server
+remains the rules engine, so illegal moves just come back as error banners.
+The UI can point at another tbt-server by filling in the server URL field
+(the API allows cross-origin requests).
+
 ## Bot
 
 The bot (component 7 in the design diagram) plays a game over the server API,

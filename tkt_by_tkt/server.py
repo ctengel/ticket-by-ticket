@@ -5,14 +5,17 @@ tkt_by_tkt.game is the rules engine, this module only translates HTTP.
 """
 
 import argparse
+import pathlib
 import secrets
 import threading
 from typing import Any, Dict, List, Literal, Optional
 
 from fastapi import Depends, FastAPI, Request, Response
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from . import game as gamelib
@@ -64,6 +67,11 @@ class TicketKeepRequest(BaseModel):
 
 
 app = FastAPI(title="TBT Game Server API", version="1.0")
+# The web UI defaults to same-origin but can point at another tbt-server;
+# the API is all bearer-token auth, so a permissive CORS policy is fine.
+app.add_middleware(CORSMiddleware, allow_origins=["*"],
+                   allow_methods=["*"], allow_headers=["*"],
+                   expose_headers=["ETag"])
 bearer = HTTPBearer(auto_error=False)
 
 GAMES: Dict[str, gamelib.Game] = {}
@@ -190,6 +198,17 @@ def get_log(g: str, since: int = 0):
     game = _game(g)
     with LOCKS[g]:
         return game.log_since(since)
+
+
+@app.get("/", include_in_schema=False)
+def root():
+    return RedirectResponse("/ui/")
+
+
+app.mount("/ui",
+          StaticFiles(directory=pathlib.Path(__file__).parent / "webui",
+                      html=True),
+          name="webui")
 
 
 def main():

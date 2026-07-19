@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ticket by Ticket</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="join-view">
+  <h1>Ticket by Ticket</h1>
+  <p>Play a seat in an existing game. Create and join games with the API
+     (see the README), then enter your seat's details here.</p>
+  <form id="join-form">
+    <label>Server URL
+      <input id="in-server" placeholder="same origin" autocomplete="off">
+    </label>
+    <label>Game ID
+      <input id="in-game" required autocomplete="off">
+    </label>
+    <label>Player ID
+      <input id="in-player" required placeholder="p1" autocomplete="off">
+    </label>
+    <label>Token
+      <input id="in-token" required autocomplete="off">
+    </label>
+    <label>Tile URL template
+      <input id="in-tiles" placeholder="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+             autocomplete="off">
+    </label>
+    <button type="submit">Play</button>
+    <p id="join-error" class="error" hidden></p>
+  </form>
+</div>
+
+<div id="play-view" hidden>
+  <div id="topbar">
+    <span id="game-label"></span>
+    <span id="turn-banner"></span>
+    <button id="leave-btn" type="button">Leave</button>
+  </div>
+  <div id="banner" hidden><span id="banner-text"></span><button id="banner-close" type="button">&times;</button></div>
+  <div id="layout">
+    <div id="board-pane">
+      <svg id="board" xmlns="http://www.w3.org/2000/svg"></svg>
+      <p id="attribution">Map tiles &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors</p>
+    </div>
+    <div id="sidebar">
+      <section id="table-section">
+        <h2>Table</h2>
+        <div id="faceup-row"></div>
+        <table id="players-table"></table>
+      </section>
+      <section id="hand-section">
+        <h2>Your hand</h2>
+        <div id="hand-row"></div>
+        <p id="cars-label"></p>
+      </section>
+      <section id="offer-section" hidden>
+        <h2>Ticket offer</h2>
+        <p>Pick which destination tickets to keep (at least the game's minimum, usually 1).</p>
+        <div id="offer-list"></div>
+        <button id="keep-btn" type="button">Keep selected</button>
+      </section>
+      <section id="tickets-section">
+        <h2>Your tickets</h2>
+        <ul id="ticket-list"></ul>
+        <button id="draw-tickets-btn" type="button">Draw tickets</button>
+      </section>
+      <section id="scores-section" hidden>
+        <h2>Final scores</h2>
+        <table id="scores-table"></table>
+      </section>
+      <section id="log-section">
+        <h2>Log</h2>
+        <ul id="log-list"></ul>
+      </section>
+    </div>
+  </div>
+</div>
+
+<dialog id="claim-dialog">
+  <h2 id="claim-title"></h2>
+  <p id="claim-info"></p>
+  <form id="claim-form" method="dialog">
+    <label id="claim-color-label">Color
+      <select id="claim-color"></select>
+    </label>
+    <label>Wild cards to use
+      <input id="claim-wilds" type="number" min="0" value="0">
+    </label>
+    <p>Spending: <span id="claim-cards"></span></p>
+    <div class="dialog-buttons">
+      <button value="cancel" type="button" id="claim-cancel">Cancel</button>
+      <button value="claim" id="claim-submit">Claim</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="app.js"></script>
+</body>
+</html>
